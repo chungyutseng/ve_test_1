@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<launch>
+
+	<node pkg="ve_test_1" type="new_center.py" name="new_center" output="screen"/>
+	<node pkg="ve_test_1" type="reference_publisher.py" name="reference_publisher" output="screen"/>
+	<node pkg="ve_test_1" type="keyboard_input_ve_test_1" name="keyboard_input_ve_test_1" output="screen"/>
+	<node pkg="ve_test_1" type="fly_cmd.py" name="cmd" output="screen"/>
+	<node pkg="ve_test_1" type="zero_velocity.py" name="zero_velocity" output="screen"/>
+
+	<group ns="drone1">
+		<node pkg="image_transport" name="republish" type="republish" output="screen" args="h264 in:=tello/image_raw raw out:=raw_image" />
+		
+		<!-- <1node pkg="image_transport" name="republish" type="republish" output="screen" args="raw in:=image_raw compressed out:=image_raw" /> -->
+		<!-- <1node pkg="image_transport" name="image_compressed1" type="republish" args="h264 in:=image_raw raw out:=raw_image" /> -->
+
+		<!-- <node pkg="aruco_positioning" type="keyboard_input" name="keyboard_input" output="screen"/> -->
+		<!-- <node pkg="aruco_positioning" type="fly_cmd.py" name="cmd" output="screen"/> -->
+		<node pkg="ve_test_1" type="aruco_positioning.py" name="aruco_positioning" output="screen"/>
+		<node pkg="ve_test_1" type="pd_controller.py" name="pd_controller" output="screen"/>
+		<node pkg="ve_test_1" type="p_controller.py" name="p_controller" output="screen"/>
+
+		<node pkg="ve_test_1" type="pd_controller_stage_two_drone1.py" name="pd_controller_stage_two_drone1" output="screen"/>
+		<!-- <1node pkg="aruco_positioning" type="center.py" name="center" output="screen"/> -->
+
+		<node pkg="ve_test_1" type="repub_imu.py" name="repub_imu" output="screen"/>
+		<node pkg="ve_test_1" type="kf.py" name="kf" output="screen"/>
+		<!-- <node pkg="aruco_positioning" type="lowpass_filter_3.py" name="lowpass_filter" output="screen"/> -->
+		<!-- <1node pkg="keyboard_control_tello" type="keyboard_input_old" name="keyboard_input_old" output="screen"/> -->
+		<!-- <1node pkg="keyboard_control_tello" type="fly_cmd.py" name="cmd" output="screen"/> -->
+
+		<node pkg="rosbag" type="record" name="myrosbag" output="screen" args="-e '/drone1/(.*)' -x '/drone(.*)/raw_image' -o 'drone1'" />
+		<include file="$(find tello_driver)/launch/one_tello.launch">
+			<arg name="net_card_name" value="wlp48s0" />
+			<!-- <arg name="net_card_name" value="wlx08beac1fec81" /> -->
+		</include>
+	</group>
+
+	<group ns="drone2">
+		<node pkg="image_transport" name="republish" type="republish" output="screen" args="h264 in:=tello/image_raw raw out:=raw_image" />
+
+		<!-- <1node pkg="image_transport" name="republish" type="republish" output="screen" args="raw in:=image_raw compressed out:=image_raw" /> -->
+		<!-- <1node pkg="image_transport" name="image_compressed1" type="republish" args="h264 in:=image_raw raw out:=raw_image" /> -->
+
+		<!-- <node pkg="aruco_positioning" type="keyboard_input" name="keyboard_input" output="screen"/> -->
+		<!-- <node pkg="aruco_positioning" type="fly_cmd.py" name="cmd" output="screen"/> -->
+		<node pkg="ve_test_1" type="aruco_positioning.py" name="aruco_positioning" output="screen"/>
+		<node pkg="ve_test_1" type="pd_controller.py" name="pd_controller" output="screen"/>
+		<node pkg="ve_test_1" type="p_controller.py" name="p_controller" output="screen"/>
+
+		<node pkg="ve_test_1" type="pd_controller_stage_three_drone2.py" name="pd_controller_stage_three_drone2" output="screen"/>
+
+		<!-- <1node pkg="aruco_positioning" type="center.py" name="center" output="screen"/> -->
+
+		<node pkg="ve_test_1" type="repub_imu.py" name="repub_imu" output="screen"/>
+		<node pkg="ve_test_1" type="kf.py" name="kf" output="screen"/>
+		<node pkg="ve_test_1" type="lowpass_filter_5.py" name="lowpass_filter" output="screen"/>
+
+		<node pkg="ve_test_1" type="velocity_estimator.py" name="velocity_estimator" output="screen"/>
+
+    	<!-- <1node pkg="aruco_positioning" type="detect_target.py" name="detect_target" output="screen"/> -->
+    	<!-- <1node pkg="aruco_positioning" type="calculate_target_pose.py" name="calculate_target_pose" output="screen"/> -->
+
+		<node pkg="rosbag" type="record" name="myrosbag" output="screen" args="-e '/drone2/(.*)' -x '/drone(.*)/raw_image' -o 'drone2'" />
+		<include file="$(find tello_driver)/launch/one_tello.launch">
+			<!-- <arg name="net_card_name" value="wlp48s0" /> -->
+			<arg name="net_card_name" value="wlx5c925ed28af7" />
+			<!-- <arg name="net_card_name" value="wlx5c925e80f3f7" /> -->
+		</include>
+	</group>
+
+	<node pkg="rosbag" type="record" name="myrosbag" output="screen" args="-a -o drone -x '/drone(.*)/raw_image'" />
+
+</launch>
