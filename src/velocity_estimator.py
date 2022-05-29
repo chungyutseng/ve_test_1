@@ -25,6 +25,7 @@ rate = rospy.Rate(15)
 # attitude_data = np.zeros((3,), dtype=np.float32)
 
 velocity_estimator_flag = 0.0
+velocity_estimator_flag_finish = 0.0
 finish_velocity_estimator_flag = 0.0
 
 total_pitch_angle = 0.0
@@ -48,8 +49,14 @@ def get_imu_message(imu_msg):
         count = count + 1.0
 
 def get_velocity_estimator(data):
-    global velocity_estimator_flag
+    global velocity_estimator_flag, velocity_estimator_flag_finish
     velocity_estimator_flag = data.data
+    if (velocity_estimator_flag == 1.0):
+        velocity_estimator_flag_finish = 1.0
+        print("CALCULATING AVERAGING ANGLE")
+    if ((velocity_estimator_flag == 0.0) and (velocity_estimator_flag_finish == 1.0)):
+        velocity_estimator_flag_finish = 0.0
+        print("FINISH CALCULATING AVERAGING ANGLE")
 
 def get_finish_velocity_estimator(data):
     global finish_velocity_estimator_flag

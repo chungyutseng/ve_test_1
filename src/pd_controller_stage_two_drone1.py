@@ -98,6 +98,8 @@ def get_desired_pose(data):
 def get_stage_two_pdc_on(data):
     global stage_two_pdc_on
     stage_two_pdc_on = data.data
+    if (stage_two_pdc_on == 1.0):
+        print("START MOVING")
 
 def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
     global count
