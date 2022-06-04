@@ -60,8 +60,8 @@ zero_vel_zone_linear_hs_x = 0.07
 zero_vel_zone_linear_hs_y = 0.07
 zero_vel_zone_linear_hs_z = 0.07
 zero_vel_zone_angular_hs = 1.5
-constant_velocity_error = 0.1
-constant_speed_forward = 0.5
+constant_velocity_error = 0.13
+constant_speed_forward = 1.1
 
 zero_velocity = np.array([zero_vel_zone_linear_hs_x, zero_vel_zone_linear_hs_y, zero_vel_zone_linear_hs_z, zero_vel_zone_angular_hs], dtype=np.float32)
 velocity_limit = np.array([vel_max_linear, vel_max_angular, vel_min_linear, vel_min_angular], dtype=np.float32)

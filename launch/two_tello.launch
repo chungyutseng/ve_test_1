@@ -55,7 +55,11 @@
 		<node pkg="ve_test_1" type="kf.py" name="kf" output="screen"/>
 		<node pkg="ve_test_1" type="lowpass_filter_5.py" name="lowpass_filter" output="screen"/>
 
-		<node pkg="ve_test_1" type="velocity_estimator.py" name="velocity_estimator" output="screen"/>
+		<!-- <node pkg="ve_test_1" type="velocity_estimator.py" name="velocity_estimator" output="screen"/> -->
+
+		<node pkg="ve_test_1" type="min_angle.py" name="min_angle" output="screen"/>
+		<node pkg="ve_test_1" type="time_duration.py" name="time_duration" output="screen"/>
+		<node pkg="ve_test_1" type="calculate_velocity.py" name="calculate_velocity" output="screen"/>
 
     	<!-- <1node pkg="aruco_positioning" type="detect_target.py" name="detect_target" output="screen"/> -->
     	<!-- <1node pkg="aruco_positioning" type="calculate_target_pose.py" name="calculate_target_pose" output="screen"/> -->

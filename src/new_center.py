@@ -44,6 +44,7 @@ pub_stage_two_drone_one = rospy.Publisher("/stage_two_drone_one", Float32, queue
 pub_stage_two_pdc_drone1 = rospy.Publisher("/drone1/stage_two_pdc_on", Float32, queue_size=10)
 pub_velocity_estimator_drone2 = rospy.Publisher("/drone2/velocity_estimator", Float32, queue_size=10)
 pub_finish_velocity_estimator_drone2 = rospy.Publisher("/drone2/finish_velocity_estimator", Float32, queue_size=10)
+pub_start_calculating_velocity_drone2 = rospy.Publisher("/drone2/start_calculating_velocity", Float32, queue_size=10)
 ############################################################################
 
 ############################################################################
@@ -120,13 +121,15 @@ pub_zero_velocity_drone2.publish(1.0)
 
 pub_stage_two_drone_one.publish(1.0)
 pub_stage_two_pdc_drone1.publish(1.0)
-
-time.sleep(5)
 pub_velocity_estimator_drone2.publish(1.0)
-time.sleep(10)
-pub_velocity_estimator_drone2.publish(0.0)
-time.sleep(1.5)
+
+time.sleep(15)
+# time.sleep(10)
+# pub_velocity_estimator_drone2.publish(0.0)
+# time.sleep(1.5)
 pub_finish_velocity_estimator_drone2.publish(1.0)
+time.sleep(1)
+pub_start_calculating_velocity_drone2.publish(1.0)
 time.sleep(1)
 pub_finish_velocity_estimator_drone2.publish(0.0)
 # pub_zero_velocity_drone2.publish(0.0)
