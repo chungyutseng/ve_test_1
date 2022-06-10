@@ -51,8 +51,8 @@ def get_stage_three_drone_two(data):
 
 def stage_one_reference():
     desired_pose_drone_one[0] = 0.0
-    desired_pose_drone_one[1] = -0.35
-    desired_pose_drone_one[2] = 1.1
+    desired_pose_drone_one[1] = -0.45
+    desired_pose_drone_one[2] = 1.2
     desired_pose_drone_one[3] = 0
     
     if small_marker == 1.0:
@@ -62,20 +62,20 @@ def stage_one_reference():
         desired_pose_drone_two[3] =  0.0
     else:
         desired_pose_drone_two[0] =  0.0
-        desired_pose_drone_two[1] = -0.95
-        desired_pose_drone_two[2] =  1.4
+        desired_pose_drone_two[1] = -1.05
+        desired_pose_drone_two[2] =  1.5
         desired_pose_drone_two[3] =  0.0
 
 def stage_two_reference():
     desired_pose_drone_one[0] = 0.0
-    desired_pose_drone_one[1] = 0.5
-    desired_pose_drone_one[2] = 1.1
+    desired_pose_drone_one[1] = 0.4
+    desired_pose_drone_one[2] = 1.2
     desired_pose_drone_one[3] = 0
 
 def stage_three_reference():
     desired_pose_drone_two[0] =  0.0
-    desired_pose_drone_two[1] = -0.1
-    desired_pose_drone_two[2] =  1.4
+    desired_pose_drone_two[1] = -0.2
+    desired_pose_drone_two[2] =  1.5
     desired_pose_drone_two[3] =  0.0
 
 rospy.Subscriber("/stage_one_drone_one", Float32, callback=get_stage_one_drone_one)

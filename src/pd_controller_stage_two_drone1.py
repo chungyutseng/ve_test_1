@@ -61,7 +61,8 @@ zero_vel_zone_linear_hs_y = 0.07
 zero_vel_zone_linear_hs_z = 0.07
 zero_vel_zone_angular_hs = 1.5
 constant_velocity_error = 0.13
-constant_speed_forward = 1.1
+constant_speed_forward = 0.8
+constant_speed_forward_flag = 0.0
 
 zero_velocity = np.array([zero_vel_zone_linear_hs_x, zero_vel_zone_linear_hs_y, zero_vel_zone_linear_hs_z, zero_vel_zone_angular_hs], dtype=np.float32)
 velocity_limit = np.array([vel_max_linear, vel_max_angular, vel_min_linear, vel_min_angular], dtype=np.float32)
@@ -107,6 +108,7 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
     global vel_msg
     global pid_internal
     global cmd_vel_test
+    global constant_speed_forward_flag
 
     x_p = c_pose[0]
     y_p = c_pose[1]
@@ -249,6 +251,7 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
         if abs(now_error_yaw) < zero_vel_zone_angular_hs*(math.pi / 180.0):
             vel_msg.angular.z = 0
 
+        # if (constant_speed_forward_flag == 0.0):
         if now_error_y > constant_velocity_error:
             vel_msg.linear.x = 0.0
             vel_msg.linear.y = constant_speed_forward
@@ -256,6 +259,8 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
             vel_msg.angular.x = 0.0
             vel_msg.angular.y = 0.0
             vel_msg.angular.z = 0.0
+            # else:
+            #     constant_speed_forward_flag = 1.0
 
 rospy.Subscriber('tello_pose_kf', numpy_msg(Floats), callback=get_kf_position)
 rospy.Subscriber('desired_pose', numpy_msg(Floats), callback=get_desired_pose)
@@ -268,4 +273,5 @@ while not rospy.is_shutdown():
         pub_pid_internal.publish(pid_internal)
         pub_cmd_vel_test.publish(cmd_vel_test)
         pub_pid_gain.publish(pid_gain)
+        print("11111111111111111111")
     rate.sleep()

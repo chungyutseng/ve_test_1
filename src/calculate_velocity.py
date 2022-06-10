@@ -22,6 +22,7 @@ rospy.init_node('calculate_velocity', anonymous=True)
 rate = rospy.Rate(15)
 
 pub_estimated_velocity = rospy.Publisher("estimated_velocity_new", Float32, queue_size=10)
+pub_estimated_velocity_bound = rospy.Publisher("estimated_velocity_bound", Float32, queue_size=10)
 
 time_duration = 0.0
 min_angle = 0.0
@@ -31,6 +32,7 @@ get_start_calculating_velocity_flag = 0.0
 flag = 0.0
 
 estimated_velocity = 0.0
+estimated_velocity_bound = 0.0
 
 def get_time_duration(data):
     global time_duration
@@ -49,7 +51,14 @@ def get_start_calculating_velocity(data):
 
 def calculating_estimated_velocity():
     global estimated_velocity
-    estimated_velocity = 0.7 * time_duration + 0.3 * min_angle
+    global estimated_velocity_bound
+    R = 0.6 * min_angle + 0.4 * time_duration
+    estimated_velocity = 0.2186 * math.exp(-0.2326 * R - 0.009719)
+    estimated_velocity_bound = estimated_velocity
+    if (estimated_velocity < 0.3):
+        estimated_velocity = 0.3
+    if (estimated_velocity > 1.0):
+        estimated_velocity = 1.0
 
 rospy.Subscriber("time_duration", Float32, callback=get_time_duration)
 rospy.Subscriber("min_angle", Float32, callback=get_min_angle)
@@ -59,4 +68,5 @@ while not rospy.is_shutdown():
     if (flag == 1.0):
         calculating_estimated_velocity()
         pub_estimated_velocity.publish(estimated_velocity)
+        pub_estimated_velocity_bound.publish(estimated_velocity_bound)
     rate.sleep()

@@ -30,6 +30,7 @@ my_namespace=rospy.get_namespace()
 # small_marker = 0.0
 
 estimated_velocity = 0.0
+constant_speed_forward_flag = 0.0
 
 # if small_marker == 1.0:
 #     kp_x = 1.0
@@ -135,6 +136,7 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
     global vel_msg
     global pid_internal
     global cmd_vel_test
+    global constant_speed_forward_flag
 
     x_p = c_pose[0]
     y_p = c_pose[1]
@@ -277,6 +279,7 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
         if abs(now_error_yaw) < zero_vel_zone_angular_hs*(math.pi / 180.0):
             vel_msg.angular.z = 0
 
+        # if (constant_speed_forward_flag == 0.0):
         if now_error_y > constant_velocity_error:
             vel_msg.linear.x = 0.0
             vel_msg.linear.y = estimated_velocity
@@ -284,10 +287,12 @@ def pd_controller(c_pose, d_pose, kp_gain, kd_gain):
             vel_msg.angular.x = 0.0
             vel_msg.angular.y = 0.0
             vel_msg.angular.z = 0.0
+            # else:
+            #     constant_speed_forward_flag = 1.0
 
 rospy.Subscriber('tello_pose_kf', numpy_msg(Floats), callback=get_kf_position)
 rospy.Subscriber('desired_pose', numpy_msg(Floats), callback=get_desired_pose)
-rospy.Subscriber('estimated_velocity', Float32, callback=get_estimated_velocity)
+rospy.Subscriber('estimated_velocity_new', Float32, callback=get_estimated_velocity)
 rospy.Subscriber('stage_three_pdc_on', Float32, callback=get_stage_three_pdc_on)
 
 while not rospy.is_shutdown():
@@ -297,4 +302,5 @@ while not rospy.is_shutdown():
         pub_pid_internal.publish(pid_internal)
         pub_cmd_vel_test.publish(cmd_vel_test)
         pub_pid_gain.publish(pid_gain)
+        print("22222222222222222222")
     rate.sleep()

@@ -132,11 +132,12 @@ time.sleep(1)
 pub_start_calculating_velocity_drone2.publish(1.0)
 time.sleep(1)
 pub_finish_velocity_estimator_drone2.publish(0.0)
-# pub_zero_velocity_drone2.publish(0.0)
+pub_zero_velocity_drone2.publish(0.0)
 ############################################################################
 
 ############################################################################
 # stage 3
-# pub_stage_three_drone_two.publish(1.0)
-# pub_stage_three_pdc_drone2.publish(1.0)
+time.sleep(1)
+pub_stage_three_drone_two.publish(1.0)
+pub_stage_three_pdc_drone2.publish(1.0)
 ############################################################################
